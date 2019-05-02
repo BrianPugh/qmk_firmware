@@ -64,7 +64,7 @@ OPT_DEFS += -DBOOTLOADER_SIZE=2048
 
 # Flash program via avrdude, but default command is not suitable.
 # You can use plaid:default:program
-PROGRAM_CMD = avrdude -c usbasp -p m328p -U flash:w:$(BUILD_DIR)/$(TARGET).hex
+PROGRAM_CMD = avrdude -c usbasp -p m328p -P usb -v -U flash:w:$(BUILD_DIR)/$(TARGET).hex
 
 
 # disable debug code
