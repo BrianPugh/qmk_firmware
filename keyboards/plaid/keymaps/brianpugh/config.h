@@ -16,4 +16,5 @@
 
 #pragma once
 
-// place overrides here
+#undef IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_TERM 100
