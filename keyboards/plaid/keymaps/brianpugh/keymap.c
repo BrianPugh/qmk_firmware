@@ -31,7 +31,7 @@ enum plaid_keycodes {
 
 #define NUMLAY MO(_NUMBER)
 #define FNLAY MO(_FUNCTION)
-#define NAVESC MT(_NAVIGATION, KC_ESC)
+#define NAVESC LT(_NAVIGATION, KC_ESC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
