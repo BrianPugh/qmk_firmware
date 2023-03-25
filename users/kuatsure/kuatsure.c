@@ -1,111 +1,122 @@
 #include "kuatsure.h"
+#include "version.h"
+
+tap_dance_action_t tap_dance_actions[] = {
+  [TD_LBRC] = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LT),
+  [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_GT),
+  [TD_SLSH] = ACTION_TAP_DANCE_DOUBLE(KC_SLSH, KC_BSLS),
+};
+
+__attribute__ ((weak))
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
+  return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case KB_MAKE:
+      if (!record->event.pressed) {
+        SEND_STRING("make " QMK_KEYBOARD ":" QMK_KEYMAP SS_TAP(X_ENTER));
+      }
+      return false;
+      break;
+
+    case KB_VRSN:
+      if (!record->event.pressed) {
+        SEND_STRING(QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
+      }
+      return false;
+      break;
+
+    case KB_FLSH:
+      if (!record->event.pressed) {
+        SEND_STRING(
+          "qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP
+        );
+
+        reset_keyboard();
+      }
+      return false;
+      break;
+  }
+
+  return process_record_keymap(keycode, record);
+}
 
 void tmux_prefix(void) {
-  register_code(KC_LCTL);
-  register_code(KC_SPC);
-
-  unregister_code(KC_LCTL);
-  unregister_code(KC_SPC);
+  tap_code16(LCTL(KC_SPC));
 }
 
 void tmux_pane_zoom(void) {
   tmux_prefix();
 
-  register_code(KC_Z);
-  unregister_code(KC_Z);
+  SEND_STRING("z");
 }
 
-void tmux_pane_switch(uint16_t keycode) {
-  tmux_prefix();
+void leader_end_user(void) {
+  // Stop music and lock computer via alfred
+  if (leader_sequence_one_key(KC_H)) {
+    SEND_STRING(SS_LGUI(" ") SS_TAP(X_LGUI) "afk" SS_TAP(X_ENTER));
+  }
 
-  register_code(KC_Q);
-  unregister_code(KC_Q);
+  // Stop music and lock computer via alfred
+  if (leader_sequence_two_keys(KC_H, KC_H)) {
+    SEND_STRING(SS_LGUI(" ") SS_TAP(X_LGUI) "afk" SS_TAP(X_ENTER) SS_TAP(X_MEDIA_PLAY_PAUSE));
+  }
 
-  register_code(keycode);
-  unregister_code(keycode);
-}
+  // Whole Screen Shot
+  if (leader_sequence_one_key(KC_A)) {
+    SEND_STRING(SS_LGUI(SS_LSFT("3")));
+  }
 
-void tmux_window_switch(uint16_t keycode) {
-  tmux_prefix();
+  // Selective Screen Shot
+  if (leader_sequence_one_key(KC_S)) {
+    SEND_STRING(SS_LGUI(SS_LSFT("4")));
+  }
 
-  register_code(keycode);
-  unregister_code(keycode);
-}
+  // TMUX - shift to pane 1 and zoom
+  if (leader_sequence_one_key(KC_J)) {
+    tmux_prefix();
+    SEND_STRING("q1");
+    tmux_pane_zoom();
+  }
 
-LEADER_EXTERNS();
-void matrix_scan_user(void) {
-  LEADER_DICTIONARY() {
-    leading = false;
-    leader_end();
+  // TMUX - shift to first window
+  if (leader_sequence_two_keys(KC_J, KC_J)) {
+    tmux_prefix();
+    SEND_STRING("1");
+  }
 
-    // Available seqs
-    // SEQ_ONE_KEY, SEQ_TWO_KEYS, SEQ_THREE_KEYS
-    // anything you can do in a macro https://docs.qmk.fm/macros.html
-    // https://docs.qmk.fm/feature_leader_key.html
+  // TMUX - shift to pane 2 and zoom
+  if (leader_sequence_one_key(KC_K)) {
+    tmux_prefix();
+    SEND_STRING("q2");
+    tmux_pane_zoom();
+  }
 
-    // Whole Screen Shot
-    SEQ_ONE_KEY(KC_A) {
-      register_code(KC_LGUI);
-      register_code(KC_LSFT);
-      register_code(KC_3);
+  // TMUX - shift to second window
+  if (leader_sequence_two_keys(KC_K, KC_K)) {
+    tmux_prefix();
+    SEND_STRING("2");
+  }
 
-      unregister_code(KC_3);
-      unregister_code(KC_LSFT);
-      unregister_code(KC_LGUI);
-    }
+  // TMUX - shift to pane 3 and zoom
+  if (leader_sequence_one_key(KC_L)) {
+    tmux_prefix();
+    SEND_STRING("q3");
+    tmux_pane_zoom();
+  }
 
-    // Selective Screen Shot
-    SEQ_ONE_KEY(KC_S) {
-      register_code(KC_LGUI);
-      register_code(KC_LSFT);
-      register_code(KC_4);
+  // TMUX - shift to third window
+  if (leader_sequence_two_keys(KC_L, KC_L)) {
+    tmux_prefix();
+    SEND_STRING("3");
+  }
 
-      unregister_code(KC_4);
-      unregister_code(KC_LSFT);
-      unregister_code(KC_LGUI);
-    }
-
-    // TMUX - shift to pane 1 and zoom
-    SEQ_ONE_KEY(KC_J) {
-      tmux_pane_switch(KC_1);
-      tmux_pane_zoom();
-    }
-
-    // TMUX - shift to pane 2 and zoom
-    SEQ_ONE_KEY(KC_K) {
-      tmux_pane_switch(KC_2);
-      tmux_pane_zoom();
-    }
-
-    // TMUX - shift to pane 3 and zoom
-    SEQ_ONE_KEY(KC_L) {
-      tmux_pane_switch(KC_3);
-      tmux_pane_zoom();
-    }
-
-    // TMUX - shift to last pane and zoom
-    SEQ_ONE_KEY(KC_SCOLON) {
-      tmux_prefix();
-
-      register_code(KC_SCOLON);
-      unregister_code(KC_SCOLON);
-
-      tmux_pane_zoom();
-    }
-
-    // TMUX - shift to first window
-    SEQ_ONE_KEY(KC_U) {
-      tmux_window_switch(KC_1);
-    }
-
-    // TMUX - shift to second window
-    SEQ_ONE_KEY(KC_I) {
-      tmux_window_switch(KC_2);
-    }
-
-    // TMUX - shift to third window
-    SEQ_ONE_KEY(KC_O) {
-      tmux_window_switch(KC_3);
-    }
+  // TMUX - shift to last pane and zoom
+  if (leader_sequence_one_key(KC_SEMICOLON)) {
+    tmux_prefix();
+    SEND_STRING(";");
+    tmux_pane_zoom();
   }
 }
