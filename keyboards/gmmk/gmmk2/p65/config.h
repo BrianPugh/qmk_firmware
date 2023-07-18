@@ -23,6 +23,7 @@
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
+#define RGBLIGHT_SLEEP
 #define RGB_DISABLE_WHEN_USB_SUSPENDED
 
 /* SPI Config for LED Driver */
