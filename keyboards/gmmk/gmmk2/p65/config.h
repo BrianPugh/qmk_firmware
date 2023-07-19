@@ -23,8 +23,9 @@
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
+#define RGB_MATRIX_TIMEOUT 120000 // milliseconds
 #define RGBLIGHT_SLEEP
-#define RGB_DISABLE_WHEN_USB_SUSPENDED
+#define RGB_DISABLE_WHEN_USB_SUSPENDED 1
 
 /* SPI Config for LED Driver */
 #define SPI_DRIVER SPIDM2
