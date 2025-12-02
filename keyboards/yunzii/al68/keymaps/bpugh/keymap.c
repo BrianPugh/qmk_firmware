@@ -11,9 +11,9 @@ enum my_keycodes {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [1] = { ENCODER_CCW_CW(KC_BRID, KC_BRIU) },
-    [2] = { ENCODER_CCW_CW(RM_VALD, RM_VALU) },  // Backlight brightness
+    [0] = { ENCODER_CCW_CW(KC_VOLU, KC_VOLD) },
+    [1] = { ENCODER_CCW_CW(KC_BRIU, KC_BRID) },
+    [2] = { ENCODER_CCW_CW(RM_VALU, RM_VALD) },  // Backlight brightness
 };
 #endif
 
