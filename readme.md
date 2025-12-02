@@ -34,3 +34,11 @@ QMK is developed and maintained by Jack Humbert of OLKB with contributions from 
 ## Official Website
 
 [qmk.fm](https://qmk.fm) is the official website of QMK, where you can find links to this page, the documentation, and the keyboards supported by QMK.
+
+## Notes to Self (BrianPugh)
+
+```
+qmk git-submodule
+qmk compile -kb yunzii/al68 -km bpugh
+qmk flash -kb yunzii/al68 -km bpugh
+```
