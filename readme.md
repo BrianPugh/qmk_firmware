@@ -41,4 +41,7 @@ QMK is developed and maintained by Jack Humbert of OLKB with contributions from 
 qmk git-submodule
 qmk compile -kb yunzii/al68 -km bpugh
 qmk flash -kb yunzii/al68 -km bpugh
+
+# if already running my keymap: press capslocks+r or capslock+b to enter bootloader
+# if running factory: hold space+b while plugging in keyboard.
 ```
