@@ -8,6 +8,8 @@ enum my_keycodes {
     KC_DH_GAME,  // DeskHop Gaming Mode
 };
 
+static bool dh_game_active = false;
+
 #define KC_WINDOW_LEFT LCTL(KC_LEFT)
 #define KC_WINDOW_RIGHT LCTL(KC_RIGHT)
 #define KC_WINDOW_UP LCTL(KC_UP)
@@ -90,6 +92,9 @@ bool rgb_matrix_indicators_user(void) {
     if (host_keyboard_led_state().caps_lock) {
         rgb_matrix_set_color(3, 255, 255, 255);  // Indicator LED, white
     }
+    if (dh_game_active) {
+        rgb_matrix_set_color(38, 255, 255, 255);  // KC_DH_GAME key, white
+    }
     return false;
 }
 
@@ -152,6 +157,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_DH_GAME:
             // DeskHop needs all keys in the same HID report
             if (record->event.pressed) {
+                dh_game_active = !dh_game_active;
                 add_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_RSFT));
                 add_key(KC_G);
                 send_keyboard_report();
