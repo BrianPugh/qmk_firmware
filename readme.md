@@ -44,4 +44,5 @@ qmk flash -kb yunzii/al68 -km bpugh
 
 # if already running my keymap: press capslocks+r or capslock+b to enter bootloader
 # if running factory: hold space+b while plugging in keyboard.
+# in emergencies, try holding escape while plugging in keyboard to enter bootloader mode
 ```
