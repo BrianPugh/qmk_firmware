@@ -37,12 +37,30 @@ QMK is developed and maintained by Jack Humbert of OLKB with contributions from 
 
 ## Notes to Self (BrianPugh)
 
+Ensure submodules are in a good state:
+
 ```
 qmk git-submodule
+```
+
+### Yunzii AL68
+
+```
 qmk compile -kb yunzii/al68 -km bpugh
 qmk flash -kb yunzii/al68 -km bpugh
 
 # if already running my keymap: press capslocks+r or capslock+b to enter bootloader
 # if running factory: hold space+b while plugging in keyboard.
 # in emergencies, try holding escape while plugging in keyboard to enter bootloader mode
+```
+
+### Ploopy Adept Trackball
+
+```
+qmk compile -kb ploopyco/madromys -km bpugh
+# This will generate a ploopyco_trackball_rev1_007_bpugh.uf2 file in current directory
+# Hold the bottom-left button while plugging in for bootloader mode
+# It will appear as a drive.
+
+cp ploopyco_madromys_rev1_001_bpugh.uf2 /Volumes/RPI-RP2/
 ```
