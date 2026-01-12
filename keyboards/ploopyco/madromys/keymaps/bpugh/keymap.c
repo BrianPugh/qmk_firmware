@@ -71,15 +71,18 @@ enum custom_keycodes {
 
 static bool dh_game_active = false;
 
+// Access drag scroll state from ploopyco.c
+extern bool is_drag_scroll;
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
         KC_DH_SW,    // Button A - DeskHop switch
         MO(_MOD),    // Button B - hold for layer 1
         DRAG_SCROLL, // Button C - toggle drag scroll
-        MS_BTN2,     // Button D - right click
-        MS_BTN3,     // Button E - middle click
-        MS_BTN1      // Button F
+        MS_BTN2,      // Button D - right click
+        LCTL(KC_UP),  // Button E - Mission Control (macOS)
+        MS_BTN1       // Button F
     ),
     [_MOD] = LAYOUT(
         KC_DH_GAME,     // Button A - DeskHop gaming mode toggle
@@ -93,6 +96,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Exit drag scroll mode on any button press (except DRAG_SCROLL itself and layer keys)
+    if (record->event.pressed && is_drag_scroll) {
+        if (keycode != DRAG_SCROLL && keycode != MO(_MOD) && keycode != DPI_CONFIG) {
+            is_drag_scroll = false;
+        }
+    }
+
     switch (keycode) {
         case KC_DH_GAME:
             // DeskHop needs all keys in the same HID report
