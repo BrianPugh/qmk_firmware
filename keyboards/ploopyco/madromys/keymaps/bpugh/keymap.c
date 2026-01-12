@@ -74,6 +74,10 @@ static bool dh_game_active = false;
 // Access drag scroll state from ploopyco.c
 extern bool is_drag_scroll;
 
+// Auto drag scroll after inactivity
+#define DRAG_SCROLL_IDLE_MS 60000  // 60 seconds
+static uint32_t last_mouse_activity = 0;
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
@@ -100,6 +104,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed && is_drag_scroll) {
         if (keycode != DRAG_SCROLL && keycode != MO(_MOD) && keycode != DPI_CONFIG) {
             is_drag_scroll = false;
+            last_mouse_activity = timer_read32();  // Reset timer so we don't immediately re-enter
         }
     }
 
@@ -119,4 +124,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
     return true;
+}
+
+// Track mouse movement to reset idle timer
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (mouse_report.x != 0 || mouse_report.y != 0) {
+        last_mouse_activity = timer_read32();
+    }
+    return mouse_report;
+}
+
+// Check for idle timeout and auto-enter drag scroll mode
+void housekeeping_task_user(void) {
+    if (!is_drag_scroll && timer_elapsed32(last_mouse_activity) > DRAG_SCROLL_IDLE_MS) {
+        is_drag_scroll = true;
+    }
 }
