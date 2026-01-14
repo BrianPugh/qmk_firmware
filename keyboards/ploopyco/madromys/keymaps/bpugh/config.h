@@ -21,8 +21,8 @@
  * DPI_CONFIG keycode cycles through these options (saved to EEPROM)
  * ═══════════════════════════════════════════════════════════════════════════
  */
-#define PLOOPY_DPI_OPTIONS { 400, 800, 1200, 1600, 2400 }
-#define PLOOPY_DPI_DEFAULT 2  // Index into array above (1200 DPI)
+#define PLOOPY_DPI_OPTIONS {400, 800, 1200, 1600, 2400}
+#define PLOOPY_DPI_DEFAULT 2 // Index into array above (1200 DPI)
 
 /* ═══════════════════════════════════════════════════════════════════════════
  * Drag Scroll Settings
@@ -30,9 +30,9 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 // #define PLOOPY_DRAGSCROLL_MOMENTARY        // Hold-to-scroll (default is toggle)
-#define PLOOPY_DRAGSCROLL_DIVISOR_H 128.0     // Horizontal sensitivity (higher = slower)
-#define PLOOPY_DRAGSCROLL_DIVISOR_V 128.0     // Vertical sensitivity (higher = slower)
-#define PLOOPY_DRAGSCROLL_INVERT              // Reverse scroll direction
+#define PLOOPY_DRAGSCROLL_DIVISOR_H 128.0 // Horizontal sensitivity (higher = slower)
+#define PLOOPY_DRAGSCROLL_DIVISOR_V 128.0 // Vertical sensitivity (higher = slower)
+#define PLOOPY_DRAGSCROLL_INVERT          // Reverse scroll direction
 
 /* ═══════════════════════════════════════════════════════════════════════════
  * Pointing Device / Sensor Settings
@@ -63,3 +63,16 @@
 // #define PLOOPY_SCROLL_DEBOUNCE 5           // ms between scroll events
 // #define PLOOPY_SCROLL_BUTTON_DEBOUNCE 100  // Ignore scroll after pressing wheel (ms)
 // #define PLOOPY_IGNORE_SCROLL_CLICK         // Ignore scroll wheel if pressed down
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * RGB Lighting Settings (NeoPixel LEDs)
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+#define RGB_DI_PIN GP12
+#define WS2812_PIO_USE_PIO1
+#define RGBLIGHT_LAYERS
+#define RGBLIGHT_DEFAULT_HUE 0   // (ignored when sat=0)
+#define RGBLIGHT_DEFAULT_SAT 0   // 0 = white
+#define RGBLIGHT_DEFAULT_VAL 255 // Brightness
+#define RGBLIGHT_SLEEP           // Turn off when host sleeps
+#define RGBLIGHT_LAYERS_RETAIN_VAL

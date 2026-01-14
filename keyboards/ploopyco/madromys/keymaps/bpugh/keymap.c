@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,        // Button B
         DPI_CONFIG,     // Button C - cycle DPI
         LCTL(KC_RGHT),  // Button D - ctrl+right
-        _______,        // Button E
+        EE_CLR,         // Button E - clear EEPROM
         LCTL(KC_LEFT)   // Button F - ctrl+left
     ),
 };
